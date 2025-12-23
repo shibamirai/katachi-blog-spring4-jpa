@@ -2,7 +2,13 @@ package com.katachi.blog.controller;
 
 import java.util.List;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,10 +25,18 @@ public class IndexController {
 	private PostService postService;
 	
 	@GetMapping
-	public String index(Model model) {
+	public String index(Model model, HttpServletRequest request,
+			@PageableDefault(page=0, size=6, sort="postedAt", direction=Direction.DESC) Pageable pageable
+	) {
+		Page<Post> page = postService.getPosts(pageable);
+		model.addAttribute("page", page);
 
-		List<Post> posts = postService.getPosts();
+		// Thymeleaf で簡潔に扱えるように posts はここで取り出しておく
+		List<Post> posts = page.getContent();
 		model.addAttribute("posts", posts);
+
+		// ページネーションのリンクで使用するURLをセット
+		model.addAttribute("currentUrl", request.getRequestURI());
 
 		return "index";
 	}

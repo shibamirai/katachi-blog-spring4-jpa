@@ -1,10 +1,10 @@
 package com.katachi.blog.service.impl;
 
-import java.util.List;
-
 import jakarta.persistence.criteria.JoinType;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -22,15 +22,22 @@ public class PostServiceImpl implements PostService {
 	 * categoryをjoin fetchするSpecification作成
 	 */
 	private Specification<Post> join() {
-		return (root, _, builder) -> {
-			root.fetch("category", JoinType.INNER);
+		return (root, query, builder) -> {
+
+			/* ページングを行う findAll では select count が実行されたときに例外が発生するため
+			 * クエリの戻り値の型が Long のとき(=select count)は join fetch しないようにする
+			 * 参考：https://hepokon365.hatenablog.com/entry/2021/12/31/160502
+			 */
+			if (query.getResultType() != Long.class) {
+				root.fetch("category", JoinType.INNER);
+			}
 			return builder.conjunction();
 		};
 	}
 
 	@Override
-	public List<Post> getPosts() {
-		return postRepository.findAll(join());
+	public Page<Post> getPosts(Pageable pageable) {
+		return postRepository.findAll(join(), pageable);
 	}
 
 }

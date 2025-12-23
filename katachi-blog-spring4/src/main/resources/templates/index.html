@@ -42,6 +42,10 @@
 					</div>
 				</div>
 			</div>
+
+			<div th:if="${page.totalPages} > 1">
+				<nav th:replace="~{components/pagination::pagination}"></nav>
+			</div>
 		</div>
 
 	</div>

@@ -1,10 +1,11 @@
 package com.katachi.blog.service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.katachi.blog.model.Post;
 
 public interface PostService {
 
-	List<Post> getPosts();
+	Page<Post> getPosts(Pageable pageable);
 }
