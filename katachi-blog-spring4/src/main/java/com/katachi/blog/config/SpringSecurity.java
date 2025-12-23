@@ -7,11 +7,18 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
 public class SpringSecurity {
+
+	@Bean
+	PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
 	/** H2 コンソール用のセキュリティ設定 */
 	@Bean
@@ -43,9 +50,15 @@ public class SpringSecurity {
 				.anyRequest().authenticated()
 			)
 			.formLogin(login -> login
+				.loginPage("/login")
+				.loginProcessingUrl("/login")
+				.usernameParameter("email")
+				.passwordParameter("password")
 				.defaultSuccessUrl("/", true)
+				.failureUrl("/login?error")
 			)
 			.logout(logout -> logout
+				.logoutUrl("/logout")
 				.logoutSuccessUrl("/")
 			);
 		return http.build();
