@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.katachi.blog.model.Category;
 import com.katachi.blog.model.Post;
 import com.katachi.blog.repository.PostRepository;
 import com.katachi.blog.service.PostService;
@@ -51,11 +52,23 @@ public class PostServiceImpl implements PostService {
 		};
 	}
 
+	/** カテゴリ選択用Specification */
+	private Specification<Post> categoryOf(Optional<Integer> categoryId) {
+		return categoryId.isEmpty() ? Specification.unrestricted() : (root, _, builder) -> {
+			return builder.equal(root.<Category>get("category").get("id"), categoryId.get());
+		};
+	}
+
 	@Override
-	public Page<Post> getPosts(Optional<String>  search, Pageable pageable) {
+	public Page<Post> getPosts(
+		Optional<String>  search,
+		Optional<Integer> categoryId,
+		Pageable pageable
+	) {
 		return postRepository.findAll(
 			join()
-			.and(Specification.anyOf(titleContains(search), bodyContains(search))),
+			.and(Specification.anyOf(titleContains(search), bodyContains(search)))
+			.and(categoryOf(categoryId)),
 			pageable
 		);
 	}

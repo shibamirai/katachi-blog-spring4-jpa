@@ -9,5 +9,9 @@ import com.katachi.blog.model.Post;
 
 public interface PostService {
 
-	Page<Post> getPosts(Optional<String>  search, Pageable pageable);
+	Page<Post> getPosts(
+		Optional<String> search,
+		Optional<Integer> categoryId,
+		Pageable pageable
+	);
 }
