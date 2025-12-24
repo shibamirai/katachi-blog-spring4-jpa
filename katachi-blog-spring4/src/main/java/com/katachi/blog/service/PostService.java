@@ -12,6 +12,7 @@ public interface PostService {
 	Page<Post> getPosts(
 		Optional<String> search,
 		Optional<Integer> categoryId,
+		Optional<Integer> userId,
 		Pageable pageable
 	);
 	

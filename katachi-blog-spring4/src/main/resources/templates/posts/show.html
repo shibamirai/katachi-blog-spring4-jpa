@@ -44,7 +44,7 @@
 						記事タイトル
 					</h1>
 					<div class="fw-bold text-end mt-4">
-						<a href="#" th:text="${post.user.name}"
+						<a th:href="@{/(author=${post.user.id})}" th:text="${post.user.name}"
 							class="link-body-emphasis link-underline-opacity-25 link-underline-opacity-75-hover"
 						>
 							投稿者名

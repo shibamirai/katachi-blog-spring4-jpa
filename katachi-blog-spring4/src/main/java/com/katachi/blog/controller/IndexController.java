@@ -42,9 +42,10 @@ public class IndexController {
 	public String index(Model model, HttpServletRequest request,
 			@RequestParam Optional<String> search,
 			@RequestParam Optional<Integer> category,
+			@RequestParam Optional<Integer> author,
 			@PageableDefault(page=0, size=6, sort="postedAt", direction=Direction.DESC) Pageable pageable
 	) {
-		Page<Post> page = postService.getPosts(search, category, pageable);
+		Page<Post> page = postService.getPosts(search, category, author, pageable);
 		model.addAttribute("page", page);
 
 		// Thymeleaf で簡潔に扱えるように posts はここで取り出しておく
@@ -56,6 +57,7 @@ public class IndexController {
 		List<String> params = new ArrayList<>();
 		if (search.isPresent() && !search.get().isBlank()) params.add("search=" + search.get());
 		if (category.isPresent()) params.add("category=" + category.get());
+		if (author.isPresent()) params.add("author=" + author.get());
 		Optional<String> queries = params.stream().reduce(
 				(accum, value) -> accum + "&" + value
 		);
