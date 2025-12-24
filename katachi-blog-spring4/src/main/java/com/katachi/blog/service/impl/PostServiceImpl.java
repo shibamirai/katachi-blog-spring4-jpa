@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.katachi.blog.exception.ResourceNotFoundException;
 import com.katachi.blog.model.Category;
 import com.katachi.blog.model.Post;
 import com.katachi.blog.repository.PostRepository;
@@ -73,4 +74,9 @@ public class PostServiceImpl implements PostService {
 		);
 	}
 
+	/** slugに該当する記事を返す。見つからなければResourceNotFoundExceptionを発生 */
+	@Override
+	public Post getPostBySlug(String slug) {
+		return postRepository.findBySlug(slug).orElseThrow(ResourceNotFoundException :: new);
+	}
 }

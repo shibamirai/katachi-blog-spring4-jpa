@@ -14,4 +14,6 @@ public interface PostService {
 		Optional<Integer> categoryId,
 		Pageable pageable
 	);
+	
+	Post getPostBySlug(String slug);
 }
