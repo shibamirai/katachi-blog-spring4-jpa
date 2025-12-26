@@ -6,10 +6,18 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,6 +49,30 @@ public class AdminPostController {
 	@Value("${app.media.directory}")
 	private String mediaDirectory;
 	
+	@GetMapping
+	public String index(Model model,
+			HttpServletRequest request,
+			@AuthenticationPrincipal User user,
+			@PageableDefault(page=0, size=2, sort="slug", direction=Direction.DESC) Pageable pageable
+	) {
+		// ログインユーザーの記事のみ
+		Page<Post> page = postService.getPosts(
+				Optional.empty(),
+				Optional.empty(),
+				Optional.of(user.getId()),
+				pageable);
+		model.addAttribute("page", page);
+		
+		// ページネーション用に URL をセット
+		model.addAttribute("currentUrl", request.getRequestURI());
+
+		// Thymeleaf で簡潔に扱えるように posts はここで取り出しておく
+		List<Post> posts = page.getContent();
+		model.addAttribute("posts", posts);
+
+		return "posts/index";
+	}
+
 	@GetMapping("/create")
 	public String create(Model model, @ModelAttribute PostForm form) {
 		model.addAttribute("categories", categoryService.getCategories());
