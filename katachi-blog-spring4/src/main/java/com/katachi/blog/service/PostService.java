@@ -17,4 +17,7 @@ public interface PostService {
 	);
 	
 	Post getPostBySlug(String slug);
+	
+	/** 記事を投稿する */
+	Post post(Post post);
 }

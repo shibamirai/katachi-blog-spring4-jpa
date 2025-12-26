@@ -7,4 +7,5 @@ import com.katachi.blog.model.Category;
 public interface CategoryService {
 	List<Category> getCategories();
 	Category getCategory(int id);
+	boolean exists(Integer id);
 }

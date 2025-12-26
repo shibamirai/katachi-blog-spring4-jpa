@@ -89,4 +89,9 @@ public class PostServiceImpl implements PostService {
 	public Post getPostBySlug(String slug) {
 		return postRepository.findBySlug(slug).orElseThrow(ResourceNotFoundException :: new);
 	}
+
+	@Override
+	public Post post(Post post) {
+		return postRepository.save(post);
+	}
 }

@@ -61,7 +61,7 @@
 							class="link-dark link-underline-opacity-0"
 						>
 							<img class="card-img-top"
-								th:src="@{/images/logo.png}"
+								th:src="${post.thumbnail != null} ? @{/media/__${post.thumbnail}__} : @{/images/logo.png}"
 								alt="blog photos"
 							>
 							<h5 class="card-title mt-4" th:text="${post.title}">
