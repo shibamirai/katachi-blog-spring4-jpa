@@ -1,6 +1,9 @@
 package com.katachi.blog.controller;
 
+import java.util.Locale;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,12 +23,14 @@ public class PostController {
 	@Autowired
 	private PostService postService;
 
-	/** 指定された記事が見つからなかった場合はエラー画面を表示する */
+	@Autowired
+	private MessageSource messageSource;
+
+	/** 指定された記事が見つからなかった場合は 404 エラー画面を表示する */
 	@ExceptionHandler(ResourceNotFoundException.class)
-	public String handleNoResourceFound(ResourceNotFoundException e, Model model) {
-		model.addAttribute("error", "");
-		model.addAttribute("message", "指定された記事が見つかりません");
-		model.addAttribute("status", HttpStatus.NOT_FOUND);
+	public String handleNoResourceFound(ResourceNotFoundException e, Model model, Locale locale) {
+		model.addAttribute("error", messageSource.getMessage("post.notfound", null, locale));
+		model.addAttribute("status", HttpStatus.NOT_FOUND.value());
 
 		return "error";
 	}

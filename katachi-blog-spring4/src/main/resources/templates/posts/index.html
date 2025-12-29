@@ -24,7 +24,12 @@
 								投稿日時
 							</td>
 							<td class="row row-cols-auto justify-content-end">
-								<span th:text="#{post.edit.btn}">Edit</span>
+								<a th:href="@{/admin/posts/{id}/edit(id=${post.id})}"
+									class="link-success"
+									th:text="#{post.edit.btn}"
+								>
+									Edit
+								</a>
 								<span th:text="#{post.delete.btn}">Delete</span>
 							</td>
 						</tr>

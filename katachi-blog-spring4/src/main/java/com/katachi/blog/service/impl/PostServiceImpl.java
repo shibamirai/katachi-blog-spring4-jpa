@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.stereotype.Service;
 
 import com.katachi.blog.exception.ResourceNotFoundException;
@@ -88,6 +89,17 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public Post getPostBySlug(String slug) {
 		return postRepository.findBySlug(slug).orElseThrow(ResourceNotFoundException :: new);
+	}
+
+	/**
+	 * ログインユーザーが投稿した記事を id で検索する。
+	 * 見つからなければ ResourceNotFoundException を発生。
+	 * 他人の記事であれば AuthenticationDeniedException を発生。
+	 */
+	@Override
+	@PostAuthorize("returnObject.userId == principal.id")
+	public Post getMyPostById(Integer id) {
+		return postRepository.findById(id).orElseThrow(ResourceNotFoundException :: new);
 	}
 
 	@Override
