@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.katachi.blog.exception.ResourceNotFoundException;
 import com.katachi.blog.form.PostForm;
@@ -132,7 +133,9 @@ public class AdminPostController {
 	public String store(Model model,
 			@AuthenticationPrincipal User user,
 			@ModelAttribute @Validated PostForm form,
-			BindingResult bindingResult
+			BindingResult bindingResult,
+			RedirectAttributes redirectAttributes,
+			Locale locale
 	) throws IOException {
 		if (bindingResult.hasErrors()) {
 			return create(model, form);
@@ -147,6 +150,11 @@ public class AdminPostController {
 
 		post = formToPost(form, post);
 		postService.post(post);
+
+		Object[] args = { post.getTitle() };
+		redirectAttributes.addFlashAttribute("success",
+			messageSource.getMessage("post.created", args, locale)
+		);
 
 		return "redirect:/";
 	}
@@ -170,7 +178,9 @@ public class AdminPostController {
 	public String update(Model model, @PathVariable Integer id,
 		@ModelAttribute @Validated PostForm form,
 		BindingResult bindingResult,
-		HttpServletRequest request
+		HttpServletRequest request,
+		RedirectAttributes redirectAttributes,
+		Locale locale
 	) throws IOException {
 		Post post = postService.getMyPostById(id);
 		
@@ -180,6 +190,11 @@ public class AdminPostController {
 
 		post = formToPost(form, post);
 		postService.post(post);
+
+		Object[] args = { post.getTitle() };
+		redirectAttributes.addFlashAttribute("success",
+			messageSource.getMessage("post.updated", args, locale)
+		);
 
 		return "redirect:" + request.getRequestURI();
 	}
