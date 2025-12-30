@@ -49,6 +49,7 @@ public class SpringSecurity {
 				.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
 				.requestMatchers("/").permitAll()
 				.requestMatchers("/login").permitAll()
+				.requestMatchers("/register").permitAll()
 				.requestMatchers("/error").permitAll()
 				.requestMatchers("/posts/**").permitAll()
 				.requestMatchers("/media/**").permitAll()
