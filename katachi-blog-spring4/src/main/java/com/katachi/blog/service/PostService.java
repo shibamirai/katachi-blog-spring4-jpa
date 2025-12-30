@@ -20,6 +20,8 @@ public interface PostService {
 	
 	Post getMyPostById(Integer id);
 	
-	/** 記事を投稿する */
+	/** 記事を投稿・更新する */
 	Post post(Post post);
+	
+	void delete(Post post);
 }
