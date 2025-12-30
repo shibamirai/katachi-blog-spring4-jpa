@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<article th:fragment="show" class="comment">
+		<div class="card bg-body-tertiary">
+			<div class="card-body">
+				<div class="row card-title">
+					<h6 class="col-auto me-auto" th:text="${comment.user.name}"></h6>
+					<span class="col-auto fs-6 text-body-secondary"
+					 	th:text="${#temporals.format(post.postedAt, #locale)}"
+					></span>
+				</div>
+				<p class="card-text" th:text="${comment.body}"></p>
+			</div>
+		</div>
+	</article>
+</body>
+</html>

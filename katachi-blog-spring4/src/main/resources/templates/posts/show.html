@@ -54,6 +54,14 @@
 						記事本文
 					</p>
 				</section>
+
+				<section class="mt-4">
+					<div id="comment-list" class="row row-cols-1 g-2">
+						<div th:each="comment: ${comments}" class="col">
+							<article th:replace="~{components/comment :: show}"></article>
+						</div>
+					</div>
+				</section>
 			</div>
 		</article>
 	</main>
