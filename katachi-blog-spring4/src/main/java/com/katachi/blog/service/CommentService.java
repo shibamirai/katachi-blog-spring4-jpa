@@ -6,4 +6,5 @@ import com.katachi.blog.model.Comment;
 
 public interface CommentService {
 	List<Comment> getByPostId(Integer postId);
+	Comment post(Comment comment);
 }

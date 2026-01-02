@@ -1,18 +1,42 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
+	<!-- 表示 -->
 	<article th:fragment="show" class="comment">
 		<div class="card bg-body-tertiary">
 			<div class="card-body">
 				<div class="row card-title">
 					<h6 class="col-auto me-auto" th:text="${comment.user.name}"></h6>
 					<span class="col-auto fs-6 text-body-secondary"
-					 	th:text="${#temporals.format(post.postedAt, #locale)}"
+					 	th:text="${#temporals.format(comment.postedAt, #locale)}"
 					></span>
 				</div>
 				<p class="card-text" th:text="${comment.body}"></p>
 			</div>
 		</div>
 	</article>
+
+	<!--	投稿フォーム-->
+	<div th:fragment="create" class="card">
+		<div class="card-body">
+			<form method="post"
+				th:action="@{/posts/{slug}/comments(slug=${post.slug})}"
+				th:object="${commentForm}"
+			>
+				<textarea
+					th:field="*{body}"
+					class="form-control"
+					th:errorclass="is-invalid"
+					style="height: 100px; border-style: none;" 
+					th:placeholder="#{comment.create.placeholder}"
+				></textarea>
+				<div class="invalid-feedback" th:errors="*{body}"></div>
+				<hr>
+				<div class="text-end">
+					<button class="btn btn-primary btn-sm" th:text="#{comment.create.btn}"></button>
+				</div>
+			</form>
+		</div>
+	</div>
 </body>
 </html>

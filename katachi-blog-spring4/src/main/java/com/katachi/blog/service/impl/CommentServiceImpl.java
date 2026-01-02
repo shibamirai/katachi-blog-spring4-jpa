@@ -19,4 +19,9 @@ public class CommentServiceImpl implements CommentService {
 	public List<Comment> getByPostId(Integer postId) {
 		return commentRepository.findByPostId(postId);
 	}
+
+	@Override
+	public Comment post(Comment comment) {
+		return commentRepository.save(comment);
+	}
 }
