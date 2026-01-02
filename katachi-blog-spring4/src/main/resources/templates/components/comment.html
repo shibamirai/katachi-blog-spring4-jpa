@@ -6,18 +6,95 @@
 		<div class="card bg-body-tertiary">
 			<div class="card-body">
 				<div class="row card-title">
-					<h6 class="col-auto me-auto" th:text="${comment.user.name}"></h6>
+					<h6 class="col-auto me-auto" th:text="${comment.user.name}">
+						投稿者名
+					</h6>
 					<span class="col-auto fs-6 text-body-secondary"
 					 	th:text="${#temporals.format(comment.postedAt, #locale)}"
-					></span>
+					>
+						投稿日時
+					</span>
 				</div>
-				<p class="card-text" th:text="${comment.body}"></p>
+				<p class="card-text" th:text="${comment.body}">
+					コメント
+				</p>
+				<div class="row justify-content-between">
+					<div class="col-auto error-message "></div>
+					<div class="col-auto"
+						sec:authorize="${isAuthenticated() && (#vars.comment.userId == principal.id)}"
+					>
+						<button
+							class="col-auto btn btn-outline-success btn-sm"
+							hx:get="@{/comments/{id}/edit(id=${comment.id})}"
+							hx-trigger="click"
+							hx-target="closest .comment"
+							hx-swap="outerHTML"
+							th:text="#{comment.edit.btn}"
+						>
+							編集
+						</button>
+						<button
+							class="col-auto btn btn-outline-danger btn-sm"
+							th:text="#{comment.delete.btn}"
+						>
+							削除
+						</button>
+					</div>
+				</div>
 			</div>
 		</div>
 	</article>
 
-	<!--	投稿フォーム-->
-	<div th:fragment="create" class="card">
+	<!-- エラーメッセージ -->
+	<div th:fragment="message" th:text="${htmxError}"
+		class="text-danger"
+	></div>
+
+	<!-- 編集フォーム -->
+	<article th:fragment="edit" class="comment">
+		<div class="card">
+			<div class="card-body">
+				<form
+					hx:patch="@{/comments/{id}(id=${commentId})}"
+					hx-target="closest .comment"
+					hx-swap="outerHTML"
+					hx-include="#csrf-token"
+					th:object="${commentForm}"
+				>
+					<textarea
+						th:field="*{body}"
+						class="form-control"
+						th:errorclass="is-invalid"
+						th:placeholder="#{comment.create.placeholder}"
+					>
+						コメント
+					</textarea>
+					<div class="invalid-feedback" th:errors="*{body}">
+						エラーメッセージ
+					</div>
+					<hr>
+					<div class="text-end">
+						<button type="button"
+							class="btn btn-secondary btn-sm"
+							hx:get="@{/comments/{id}(id=${commentId})}"
+							hx-trigger="click"
+							hx-target="closest .comment"
+							hx-swap="outerHTML"
+							th:text="#{comment.cancel.btn}"
+						>
+							キャンセル
+						</button>
+						<button class="btn btn-primary btn-sm" th:text="#{comment.update.btn}">
+							更新
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</article>
+
+	<!--	 投稿フォーム -->
+	<div th:fragment="create" class="card comment">
 		<div class="card-body">
 			<form method="post"
 				th:action="@{/posts/{slug}/comments(slug=${post.slug})}"
@@ -27,13 +104,18 @@
 					th:field="*{body}"
 					class="form-control"
 					th:errorclass="is-invalid"
-					style="height: 100px; border-style: none;" 
 					th:placeholder="#{comment.create.placeholder}"
-				></textarea>
-				<div class="invalid-feedback" th:errors="*{body}"></div>
+				>
+					コメント入力
+				</textarea>
+				<div class="invalid-feedback" th:errors="*{body}">
+					エラーメッセージ
+				</div>
 				<hr>
 				<div class="text-end">
-					<button class="btn btn-primary btn-sm" th:text="#{comment.create.btn}"></button>
+					<button class="btn btn-primary btn-sm" th:text="#{comment.create.btn}">
+						投稿
+					</button>
 				</div>
 			</form>
 		</div>

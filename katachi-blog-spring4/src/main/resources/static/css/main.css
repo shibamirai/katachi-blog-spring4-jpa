@@ -31,3 +31,7 @@ footer li {
 .comment .card-text {
 	white-space: pre-wrap;
 }
+
+.comment textarea {
+	height: 100px; border-style: none;
+}
