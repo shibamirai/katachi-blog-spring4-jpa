@@ -1,8 +1,10 @@
 package com.katachi.blog.controller;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
@@ -33,11 +35,14 @@ public class CommentController {
 	@Autowired
 	private CommentService commentService;
 
+	@Autowired
+	private MessageSource messageSource;
+
 	/* 指定されたコメントが見つからない場合 */
 	@ExceptionHandler(ResourceNotFoundException.class)
 	public String handleNoResourceFound(ResourceNotFoundException e, Model model,
-			HtmxRequest htmxRequest, HtmxResponse htmxResponse) {
-		model.addAttribute("htmxError", "指定されたコメントが見つかりません");
+			HtmxRequest htmxRequest, HtmxResponse htmxResponse, Locale locale) {
+		model.addAttribute("htmxError", messageSource.getMessage("comment.notfound", null, locale));
 		htmxResponse.setRetarget("previous .error-message");
 		return "components/comment :: message";
 	}
@@ -45,8 +50,8 @@ public class CommentController {
 	/* 指定されたコメントの編集権限がない場合 */
 	@ExceptionHandler(AccessDeniedException.class)
 	public String handleAccessDenied(AccessDeniedException e, Model model,
-			HtmxRequest htmxRequest, HtmxResponse htmxResponse) {
-		model.addAttribute("htmxError", "編集権限がありません");
+			HtmxRequest htmxRequest, HtmxResponse htmxResponse, Locale locale) {
+		model.addAttribute("htmxError", messageSource.getMessage("comment.notauthorized", null, locale));
 		htmxResponse.setRetarget("previous .error-message");
 		return "components/comment :: message";
 	}

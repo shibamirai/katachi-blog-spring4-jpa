@@ -11,6 +11,9 @@ import org.springframework.security.config.annotation.web.configurers.HeadersCon
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.RequestHeaderRequestMatcher;
+
+import io.github.wimdeblauwe.htmx.spring.boot.security.HxRefreshHeaderAuthenticationEntryPoint;
 
 @Configuration
 @EnableWebSecurity
@@ -68,6 +71,20 @@ public class SpringSecurity {
 				.logoutUrl("/logout")
 				.logoutSuccessUrl("/")
 			);
+
+		/*
+		 * 未認証ユーザによる HTMX リクエストは
+		 * LoginUrlAuthenticationEntryPoint によるログイン画面表示ではなく
+		 * HxRefreshHeaderAuthenticationEntryPoint を使って全画面リフレッシュを行う
+		 * 
+		 * https://www.wimdeblauwe.com/blog/2022/10/04/htmx-authentication-error-handling/
+		 */
+		http.exceptionHandling(exception -> exception
+			.defaultAuthenticationEntryPointFor(
+				new HxRefreshHeaderAuthenticationEntryPoint(),
+				new RequestHeaderRequestMatcher("HX-Request")
+			)
+		);
 		return http.build();
 	}
 }
