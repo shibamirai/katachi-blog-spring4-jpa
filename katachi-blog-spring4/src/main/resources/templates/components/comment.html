@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 	<!-- 表示 -->
-	<article th:fragment="show" class="comment">
+	<article th:fragment="show">
 		<div class="card bg-body-tertiary">
 			<div class="card-body">
 				<div class="row card-title">
@@ -28,7 +28,6 @@
 							hx:get="@{/comments/{id}/edit(id=${comment.id})}"
 							hx-trigger="click"
 							hx-target="closest .comment"
-							hx-swap="outerHTML"
 							th:text="#{comment.edit.btn}"
 						>
 							編集
@@ -36,6 +35,11 @@
 						<button
 							class="col-auto btn btn-outline-danger btn-sm"
 							th:text="#{comment.delete.btn}"
+							hx:delete="@{/comments/{id}(id=${comment.id})}"
+							hx-include="#csrf-token"
+							hx-confirm="本当に削除しますか？"
+							hx-trigger="click"
+							hx-target="#comment-list"
 						>
 							削除
 						</button>
@@ -51,13 +55,12 @@
 	></div>
 
 	<!-- 編集フォーム -->
-	<article th:fragment="edit" class="comment">
+	<article th:fragment="edit">
 		<div class="card">
 			<div class="card-body">
 				<form
 					hx:patch="@{/comments/{id}(id=${commentId})}"
 					hx-target="closest .comment"
-					hx-swap="outerHTML"
 					hx-include="#csrf-token"
 					th:object="${commentForm}"
 				>
@@ -79,7 +82,6 @@
 							hx:get="@{/comments/{id}(id=${commentId})}"
 							hx-trigger="click"
 							hx-target="closest .comment"
-							hx-swap="outerHTML"
 							th:text="#{comment.cancel.btn}"
 						>
 							キャンセル

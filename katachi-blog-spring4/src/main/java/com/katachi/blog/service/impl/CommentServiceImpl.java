@@ -32,4 +32,9 @@ public class CommentServiceImpl implements CommentService {
 	public Comment getMyComment(Integer commentId) {
 		return commentRepository.findById(commentId).orElseThrow(ResourceNotFoundException::new);
 	}
+
+	@Override
+	public void delete(Comment comment) {
+		commentRepository.delete(comment);
+	}
 }

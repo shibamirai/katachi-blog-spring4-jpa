@@ -1,5 +1,7 @@
 package com.katachi.blog.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -89,5 +92,17 @@ public class CommentController {
 		commentService.post(comment);
 
 		return show(commentId, model);
+	}
+
+	@HxRequest
+	@DeleteMapping(produces=MediaType.TEXT_HTML_VALUE, path="/{commentId}")
+	String delete(@PathVariable Integer commentId, Model model) {
+		
+		Comment comment = commentService.getMyComment(commentId);
+		commentService.delete(comment);
+
+		List<Comment> comments = commentService.getByPostId(comment.getPostId());
+		model.addAttribute("comments", comments);
+		return "posts/show :: comments";
 	}
 }
