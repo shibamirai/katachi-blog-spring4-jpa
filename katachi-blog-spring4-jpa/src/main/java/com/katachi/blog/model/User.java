@@ -1,17 +1,24 @@
 package com.katachi.blog.model;
 
+import java.util.Collection;
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import lombok.Data;
 
 @Data
 @Entity
 @Table(name="\"user\"")
-public class User {
+public class User implements UserDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,5 +31,16 @@ public class User {
 	private String password;
 
 	private String role;
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		GrantedAuthority authority = new SimpleGrantedAuthority(this.role);
+		return List.of(authority);
+	}
+
+	@Override
+	public String getUsername() {
+		return this.email;
+	}
 
 }

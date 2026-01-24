@@ -22,7 +22,7 @@
 							aria-expanded="false"
 						>
 							<span
-								th:with="loginName=${#authentication.principal.username}" 
+								th:with="loginName=${#authentication.principal.name}" 
 								th:text="#{welcome(${loginName})}"
 							>
 								ログイン名
@@ -45,6 +45,7 @@
 					<li class="nav-item">
 						<a th:href="@{/login}"
 							class="nav-link"
+							th:classappend="${currentUrl} == @{/login} ? 'link-primary' : ''"
 							th:text="#{login}"
 						>
 							ログイン
