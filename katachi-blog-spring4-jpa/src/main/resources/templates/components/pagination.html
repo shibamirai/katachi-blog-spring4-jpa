@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+	<nav th:fragment="pagination"
+		class="d-flex align-items-center justify-content-between"
+	>
+		<div class="d-flex justify-content-center flex-fill d-sm-none">
+			<ul class="pagination">
+				<!-- Previous Page Link -->
+				<li class="page-item" th:classappend="${page.first} ? 'disabled'">
+					<a class="page-link"
+						th:href="@{${currentUrl}(page=${page.number - 1})}"
+						th:text="#{pagination.previous}"
+						rel="prev"
+					></a>
+				</li>
+				
+				<!-- Next Page Link -->
+				<li class="page-item" th:classappend="${page.last} ? 'disabled'">
+					<a class="page-link"
+						th:href="@{${currentUrl}(page=${page.number + 1})}"
+						th:text="#{pagination.next}"
+						rel="next"
+					></a>
+				</li>
+			</ul>
+		</div>
+
+		<div class="d-none flex-sm-fill d-sm-flex align-items-sm-center justify-content-sm-between">
+			<div>
+			    <p class="small text-muted"
+					th:text="#{pagination.information(${page.totalElements}, ${(page.number * page.size) + 1}, ${(page.number * page.size) + page.numberOfElements})}"
+				>ｘ件中ｘ～ｘ件表示</p>
+			</div>
+
+			<div>
+				<ul class="pagination">
+					<!-- Previous Page Link -->
+					<li class="page-item" th:classappend="${page.first} ? 'disabled'">
+						<a class="page-link"
+							th:href="@{${currentUrl}(page=${page.number - 1})}"
+							th:aria-label="#{pagination.previous}"
+							rel="prev"
+						>&lsaquo;</a>
+					</li>
+					
+					<!--/* … */-->
+					<li th:if="${page.number gt 2}" class="page-item disabled">
+						<span class="page-link">…</span>
+					</li>
+					
+					<!-- Pagination Elements -->
+					<th:block th:each="i : ${ #numbers.sequence(page.number - 2, page.number + 2) }">
+						<li th:if="${i ge 0 and i lt page.totalPages}" class="page-item"
+							th:classappend="${i eq page.number} ? 'active'">
+							<a th:href="@{${currentUrl}(page=${i})}" th:text="${i + 1}" class="page-link"></a>
+						</li>
+					</th:block>
+
+					<!--/* … */-->
+					<li th:if="${page.totalPages gt (page.number + 3)}" class="page-item disabled">
+						<span class="page-link">…</span>
+					</li>
+					
+					<!-- Next Page Link -->
+					<li class="page-item" th:classappend="${page.last} ? 'disabled'">
+						<a class="page-link"
+							th:href="@{${currentUrl}(page=${page.number + 1})}"
+							th:aria-label="#{pagination.next}"
+							rel="next"
+						>&rsaquo;</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+</body>
+</html>
