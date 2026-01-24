@@ -5,98 +5,47 @@
 <head>
 </head>
 <body>
-	<div layout:fragment="content" class="container">
-		<p>カテゴリー</p>
-		<table>
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>名称</th>
-					<th>作成日時</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="category: ${categories}">
-					<td th:text="${category.id}"></td>
-					<td th:text="${category.name}"></td>
-					<td th:text="${#temporals.format(category.createdAt, #locale)}"></td>
-				</tr>
-			</tbody>
-		</table>
-		
-		<p>ユーザー</p>
-		<table>
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>名前</th>
-					<th>メールアドレス</th>
-					<th>ロール</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="user: ${users}">
-					<td th:text="${user.id}"></td>
-					<td th:text="${user.name}"></td>
-					<td th:text="${user.email}"></td>
-					<td th:text="${user.role}"></td>
-				</tr>
-			</tbody>
-		</table>
+	<div layout:fragment="content">
+
+		<header class="p-5 text-center bg-primary-subtle">
+			<h4 th:text="#{index.title}">
+				ページタイトル
+			</h4>
+		</header>
 	
-		<p>投稿</p>
-		<table>
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>投稿者</th>
-					<th>カテゴリー</th>
-					<th>スラッグ</th>
-					<th>タイトル</th>
-					<th>画像</th>
-					<th>本文</th>
-					<th>投稿日時</th>
-					<th>更新日時</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="post: ${posts}">
-					<td th:text="${post.id}"></td>
-					<td th:text="${post.userId}"></td>
-					<td th:text="${post.categoryId}"></td>
-					<td th:text="${post.slug}"></td>
-					<td th:text="${post.title}"></td>
-					<td th:text="${post.thumbnail}"></td>
-					<td th:text="${post.body}"></td>
-					<td th:text="${#temporals.format(post.postedAt, #locale)}"></td>
-					<td th:text="${#temporals.format(post.updatedAt, #locale)}"></td>
-				</tr>
-			</tbody>
-		</table>
-		
-		<p>コメント</p>
-		<table>
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>投稿</th>
-					<th>投稿者</th>
-					<th>本文</th>
-					<th>投稿日時</th>
-					<th>更新日時</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="comment: ${comments}">
-					<td th:text="${comment.id}"></td>
-					<td th:text="${comment.postId}"></td>
-					<td th:text="${comment.userId}"></td>
-					<td th:text="${comment.body}"></td>
-					<td th:text="${#temporals.format(comment.postedAt, #locale)}"></td>
-					<td th:text="${#temporals.format(comment.updatedAt, #locale)}"></td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="container my-4">
+			<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+				<div th:each="post: ${posts}" class="col">
+					<div class="card border-light">
+						<a href="#"
+							class="link-dark link-underline-opacity-0"
+						>
+							<img class="card-img-top"
+								th:src="@{/images/logo.png}"
+								alt="blog photos"
+							>
+							<h5 class="card-title mt-4" th:text="${post.title}">
+								記事タイトル
+							</h5>
+						</a>
+						<div class="card-body row">
+							<a class="col-auto me-auto btn btn-outline-info btn-sm"
+								href="#"
+								th:text="${post.category.name}"
+							>
+								カテゴリー名
+							</a>
+							<p class="col-auto card-text">
+								<small class="text-body-secondary"
+									th:text="${#temporals.format(post.postedAt, #locale)}"
+								>投稿日時</small>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</div>
 </body>
 </html>
