@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<body>
+	<main layout:fragment="content" class="container my-5">
+		<article class="row g-5">
+			<div class="col-lg-4 pt-lg-5">
+				<img class="img-fluid rounded"
+					th:src="@{/images/logo.png}"
+					alt="blog photos"
+				>
+				<div class="row mt-4">
+					<a class="col-auto me-auto btn btn-outline-info btn-sm"
+						th:href="@{/(category=${post.category.id})}"
+						th:text="${post.category.name}"
+					>
+						カテゴリー名
+					</a>
+					<p class="col-auto card-text">
+						<small class="text-body-secondary"
+							th:text="${#temporals.format(post.postedAt, #locale)}"
+						>
+							投稿日時
+						</small>
+					</p>
+				</div>
+			</div>
+
+			<div class="col-lg-8">
+				<div class="d-none d-lg-block">
+					<a th:href="@{/}" class="icon-link">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+							<path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+						</svg>
+						<span th:text="#{back.home}">
+							戻る
+						</span>
+					</a>
+				</div>
+
+				<section class="mt-4">
+					<h1 class="fs-1 fw-bold" th:text="${post.title}">
+						記事タイトル
+					</h1>
+					<div class="fw-bold text-end mt-4">
+						<a href="#" th:text="${post.user.name}"
+							class="link-body-emphasis link-underline-opacity-25 link-underline-opacity-75-hover"
+						>
+							投稿者名
+						</a>
+					</div>
+					<p class="post-body mt-4" th:text="${post.body}">
+						記事本文
+					</p>
+				</section>
+
+			</div>
+		</article>
+	</main>
+</body>
+</html>

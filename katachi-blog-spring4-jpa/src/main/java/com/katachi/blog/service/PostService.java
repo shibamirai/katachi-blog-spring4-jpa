@@ -11,4 +11,6 @@ public interface PostService {
 
 	Page<Post> getPosts(PostCriteria postCriteria, Pageable pageable);
 
+	Post getPostBySlug(String slug);
+
 }

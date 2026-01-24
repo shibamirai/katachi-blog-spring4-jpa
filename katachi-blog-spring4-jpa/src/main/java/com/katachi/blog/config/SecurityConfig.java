@@ -48,6 +48,7 @@ public class SecurityConfig {
 				.requestMatchers("/").permitAll()
 				.requestMatchers("/login").permitAll()
 				.requestMatchers("/error").permitAll()
+				.requestMatchers("/posts/*").permitAll()
 				.anyRequest().authenticated()
 			)
 			.formLogin(login -> login

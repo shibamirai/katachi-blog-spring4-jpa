@@ -71,4 +71,9 @@ public class PostServiceImpl implements PostService {
 		);
 	}
 
+	@Override
+	public Post getPostBySlug(String slug) {
+		return postRepository.findBySlug(slug).orElseThrow();
+	}
+
 }
