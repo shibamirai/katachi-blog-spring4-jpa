@@ -2,16 +2,16 @@ package com.katachi.blog.service;
 
 import java.util.Optional;
 
+import lombok.Value;
+
+/**
+ * Post の検索パラメータをまとめたクラス
+ * @Value により Getter と、全フィールドを引数にもつコンストラクタを生成
+ */
+@Value
 public class PostCriteria {
 
-	private final Optional<String> titleOrBody;
-
-	public PostCriteria(Optional<String> titleOrBody) {
-		this.titleOrBody = titleOrBody;
-	}
-	
-	public Optional<String> getTitleOrBody() {
-		return this.titleOrBody;
-	}
+	Optional<String> titleOrBody;
+	Optional<Integer> categoryId;
 
 }

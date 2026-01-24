@@ -13,6 +13,37 @@
 			</h4>
 
 			<div class="mt-4 row justify-content-center g-2">
+				<div class="dropdown col-sm-auto">
+					<button type="button"
+						class="btn btn-light dropdown-toggle w-100" 
+						data-bs-toggle="dropdown" aria-expanded="false"
+						th:text="${currentCategory} ?: #{category.search}"
+					>
+						カテゴリー選択
+					</button>
+
+					<ul class="dropdown-menu">
+						<li>
+							<a class="dropdown-item"
+								th:href="@{/}"
+								th:classappend="${param.category} == null ? 'active'"
+								th:text="#{category.all}"
+							>
+								すべて
+							</a>
+						</li>
+						<li th:each="category : ${categories}">
+							<a class="dropdown-item"
+								th:href="@{/(category=${category.id})}"
+								th:classappend="${param.category} != null and ${param.category[0]} == ${category.id} ? 'active'"
+								th:text="${category.name}"
+							>
+								カテゴリー名
+							</a>
+						</li>
+					</ul>
+				</div>
+
 				<form method="get" th:action="@{/}" class="col-sm-auto">
 					<input class="form-control"
 						name="search"
@@ -40,7 +71,7 @@
 						</a>
 						<div class="card-body row">
 							<a class="col-auto me-auto btn btn-outline-info btn-sm"
-								href="#"
+								th:href="@{/(category=${post.category.id})}"
 								th:text="${post.category.name}"
 							>
 								カテゴリー名
