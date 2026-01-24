@@ -9,6 +9,6 @@ import com.katachi.blog.model.Post;
 @Service
 public interface PostService {
 
-	Page<Post> getPosts(Pageable pageable);
+	Page<Post> getPosts(PostCriteria postCriteria, Pageable pageable);
 
 }

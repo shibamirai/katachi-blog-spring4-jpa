@@ -1,5 +1,7 @@
 package com.katachi.blog.service.impl;
 
+import java.util.Optional;
+
 import jakarta.persistence.criteria.JoinType;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.katachi.blog.model.Post;
 import com.katachi.blog.repository.PostRepository;
+import com.katachi.blog.service.PostCriteria;
 import com.katachi.blog.service.PostService;
 
 @Service
@@ -35,9 +38,28 @@ public class PostServiceImpl implements PostService {
 		};
 	}
 
+	/** タイトル検索用Specification */
+	private Specification<Post> titleContains(Optional<String> search) {
+		return search.isEmpty() ? Specification.unrestricted() : (root, _, builder) -> {
+			return builder.like(root.get("title"), "%" + search.get() + "%");
+		};
+	}
+
+	/** 記事本文検索用Specification */
+	private Specification<Post> bodyContains(Optional<String> search) {
+		return search.isEmpty() ? Specification.unrestricted() : (root, _, builder) -> {
+			return builder.like(root.get("body"), "%" + search.get() + "%");
+		};
+	}
+
 	@Override
-	public Page<Post> getPosts(Pageable pageable) {
-		return postRepository.findAll(join(), pageable);
+	public Page<Post> getPosts(PostCriteria postCriteria, Pageable pageable) {
+		Optional<String> search = postCriteria.getTitleOrBody();
+		return postRepository.findAll(
+			join()
+			.and(Specification.anyOf(titleContains(search), bodyContains(search))),
+			pageable
+		);
 	}
 
 }

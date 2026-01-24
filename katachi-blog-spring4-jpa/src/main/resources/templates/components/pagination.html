@@ -5,13 +5,14 @@
 <body>
 	<nav th:fragment="pagination"
 		class="d-flex align-items-center justify-content-between"
+		th:with="queries=(${queries} ?: '')"
 	>
 		<div class="d-flex justify-content-center flex-fill d-sm-none">
 			<ul class="pagination">
 				<!-- Previous Page Link -->
 				<li class="page-item" th:classappend="${page.first} ? 'disabled'">
 					<a class="page-link"
-						th:href="@{${currentUrl}(page=${page.number - 1})}"
+						th:href="@{${currentUrl + queries}(page=${page.number - 1})}"
 						th:text="#{pagination.previous}"
 						rel="prev"
 					></a>
@@ -20,7 +21,7 @@
 				<!-- Next Page Link -->
 				<li class="page-item" th:classappend="${page.last} ? 'disabled'">
 					<a class="page-link"
-						th:href="@{${currentUrl}(page=${page.number + 1})}"
+						th:href="@{${currentUrl + queries}(page=${page.number + 1})}"
 						th:text="#{pagination.next}"
 						rel="next"
 					></a>
@@ -40,7 +41,7 @@
 					<!-- Previous Page Link -->
 					<li class="page-item" th:classappend="${page.first} ? 'disabled'">
 						<a class="page-link"
-							th:href="@{${currentUrl}(page=${page.number - 1})}"
+							th:href="@{${currentUrl + queries}(page=${page.number - 1})}"
 							th:aria-label="#{pagination.previous}"
 							rel="prev"
 						>&lsaquo;</a>
@@ -55,7 +56,7 @@
 					<th:block th:each="i : ${ #numbers.sequence(page.number - 2, page.number + 2) }">
 						<li th:if="${i ge 0 and i lt page.totalPages}" class="page-item"
 							th:classappend="${i eq page.number} ? 'active'">
-							<a th:href="@{${currentUrl}(page=${i})}" th:text="${i + 1}" class="page-link"></a>
+							<a th:href="@{${currentUrl + queries}(page=${i})}" th:text="${i + 1}" class="page-link"></a>
 						</li>
 					</th:block>
 
@@ -67,7 +68,7 @@
 					<!-- Next Page Link -->
 					<li class="page-item" th:classappend="${page.last} ? 'disabled'">
 						<a class="page-link"
-							th:href="@{${currentUrl}(page=${page.number + 1})}"
+							th:href="@{${currentUrl + queries}(page=${page.number + 1})}"
 							th:aria-label="#{pagination.next}"
 							rel="next"
 						>&rsaquo;</a>

@@ -11,6 +11,16 @@
 			<h4 th:text="#{index.title}">
 				ページタイトル
 			</h4>
+
+			<div class="mt-4 row justify-content-center g-2">
+				<form method="get" th:action="@{/}" class="col-sm-auto">
+					<input class="form-control"
+						name="search"
+						th:placeholder="#{search}"
+						th:value="${param.search}"
+					>
+				</form>
+			</div>
 		</header>
 	
 		<div class="container my-4">
