@@ -1,100 +1,102 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
 </head>
 <body>
-	<p>カテゴリー</p>
-	<table>
-		<thead>
-			<tr>
-				<th>ID</th>
-				<th>名称</th>
-				<th>作成日時</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="category: ${categories}">
-				<td th:text="${category.id}"></td>
-				<td th:text="${category.name}"></td>
-				<td th:text="${#temporals.format(category.createdAt, #locale)}"></td>
-			</tr>
-		</tbody>
-	</table>
+	<div layout:fragment="content" class="container">
+		<p>カテゴリー</p>
+		<table>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>名称</th>
+					<th>作成日時</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="category: ${categories}">
+					<td th:text="${category.id}"></td>
+					<td th:text="${category.name}"></td>
+					<td th:text="${#temporals.format(category.createdAt, #locale)}"></td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<p>ユーザー</p>
+		<table>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>名前</th>
+					<th>メールアドレス</th>
+					<th>ロール</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="user: ${users}">
+					<td th:text="${user.id}"></td>
+					<td th:text="${user.name}"></td>
+					<td th:text="${user.email}"></td>
+					<td th:text="${user.role}"></td>
+				</tr>
+			</tbody>
+		</table>
 	
-	<p>ユーザー</p>
-	<table>
-		<thead>
-			<tr>
-				<th>ID</th>
-				<th>名前</th>
-				<th>メールアドレス</th>
-				<th>ロール</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="user: ${users}">
-				<td th:text="${user.id}"></td>
-				<td th:text="${user.name}"></td>
-				<td th:text="${user.email}"></td>
-				<td th:text="${user.role}"></td>
-			</tr>
-		</tbody>
-	</table>
-
-	<p>投稿</p>
-	<table>
-		<thead>
-			<tr>
-				<th>ID</th>
-				<th>投稿者</th>
-				<th>カテゴリー</th>
-				<th>スラッグ</th>
-				<th>タイトル</th>
-				<th>画像</th>
-				<th>本文</th>
-				<th>投稿日時</th>
-				<th>更新日時</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="post: ${posts}">
-				<td th:text="${post.id}"></td>
-				<td th:text="${post.userId}"></td>
-				<td th:text="${post.categoryId}"></td>
-				<td th:text="${post.slug}"></td>
-				<td th:text="${post.title}"></td>
-				<td th:text="${post.thumbnail}"></td>
-				<td th:text="${post.body}"></td>
-				<td th:text="${#temporals.format(post.postedAt, #locale)}"></td>
-				<td th:text="${#temporals.format(post.updatedAt, #locale)}"></td>
-			</tr>
-		</tbody>
-	</table>
-	
-	<p>コメント</p>
-	<table>
-		<thead>
-			<tr>
-				<th>ID</th>
-				<th>投稿</th>
-				<th>投稿者</th>
-				<th>本文</th>
-				<th>投稿日時</th>
-				<th>更新日時</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="comment: ${comments}">
-				<td th:text="${comment.id}"></td>
-				<td th:text="${comment.postId}"></td>
-				<td th:text="${comment.userId}"></td>
-				<td th:text="${comment.body}"></td>
-				<td th:text="${#temporals.format(comment.postedAt, #locale)}"></td>
-				<td th:text="${#temporals.format(comment.updatedAt, #locale)}"></td>
-			</tr>
-		</tbody>
-	</table>
+		<p>投稿</p>
+		<table>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>投稿者</th>
+					<th>カテゴリー</th>
+					<th>スラッグ</th>
+					<th>タイトル</th>
+					<th>画像</th>
+					<th>本文</th>
+					<th>投稿日時</th>
+					<th>更新日時</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="post: ${posts}">
+					<td th:text="${post.id}"></td>
+					<td th:text="${post.userId}"></td>
+					<td th:text="${post.categoryId}"></td>
+					<td th:text="${post.slug}"></td>
+					<td th:text="${post.title}"></td>
+					<td th:text="${post.thumbnail}"></td>
+					<td th:text="${post.body}"></td>
+					<td th:text="${#temporals.format(post.postedAt, #locale)}"></td>
+					<td th:text="${#temporals.format(post.updatedAt, #locale)}"></td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<p>コメント</p>
+		<table>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>投稿</th>
+					<th>投稿者</th>
+					<th>本文</th>
+					<th>投稿日時</th>
+					<th>更新日時</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="comment: ${comments}">
+					<td th:text="${comment.id}"></td>
+					<td th:text="${comment.postId}"></td>
+					<td th:text="${comment.userId}"></td>
+					<td th:text="${comment.body}"></td>
+					<td th:text="${#temporals.format(comment.postedAt, #locale)}"></td>
+					<td th:text="${#temporals.format(comment.updatedAt, #locale)}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 </body>
 </html>
