@@ -47,6 +47,7 @@ public class SecurityConfig {
 				.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
 				.requestMatchers("/").permitAll()
 				.requestMatchers("/login").permitAll()
+				.requestMatchers("/error").permitAll()
 				.anyRequest().authenticated()
 			)
 			.formLogin(login -> login
