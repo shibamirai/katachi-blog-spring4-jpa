@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.katachi.blog.model.Category;
 import com.katachi.blog.model.Post;
+import com.katachi.blog.model.User;
 import com.katachi.blog.repository.PostRepository;
 import com.katachi.blog.service.PostCriteria;
 import com.katachi.blog.service.PostService;
@@ -60,13 +61,21 @@ public class PostServiceImpl implements PostService {
 		};
 	}
 
+	/** 投稿者名フィルタリング用Specification */
+	private Specification<Post> postedBy(Optional<Integer> userId) {
+		return userId.isEmpty() ? Specification.unrestricted() : (root, _, builder) -> {
+			return builder.equal(root.<User>get("user").get("id"), userId.get());
+		};
+	}
+
 	@Override
 	public Page<Post> getPosts(PostCriteria postCriteria, Pageable pageable) {
 		Optional<String> search = postCriteria.getTitleOrBody();
 		return postRepository.findAll(
 			join()
 			.and(Specification.anyOf(titleContains(search), bodyContains(search)))
-			.and(categoryOf(postCriteria.getCategoryId())),
+			.and(categoryOf(postCriteria.getCategoryId()))
+			.and(postedBy(postCriteria.getUserId())),
 			pageable
 		);
 	}

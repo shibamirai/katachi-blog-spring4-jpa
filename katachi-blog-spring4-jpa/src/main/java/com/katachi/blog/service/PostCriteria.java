@@ -13,5 +13,6 @@ public class PostCriteria {
 
 	Optional<String> titleOrBody;
 	Optional<Integer> categoryId;
+	Optional<Integer> userId;
 
 }
