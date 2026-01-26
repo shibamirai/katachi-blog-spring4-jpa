@@ -19,6 +19,22 @@
 				<p class="card-text" th:text="${comment.body}">
 					コメント
 				</p>
+
+				<div class="row justify-content-end"
+					sec:authorize="${isAuthenticated() && (#vars.comment.userId == principal.id)}"
+				>
+					<div class="col-auto">
+						<button
+							class="btn btn-outline-success btn-sm"
+							hx:get="@{/comments/{id}/edit(id=${comment.id})}"
+							hx-trigger="click"
+							hx-target="closest .comment"
+							th:text="#{comment.edit.btn}"
+						>
+							Edit
+						</button>
+					</div>
+				</div>
 			</div>
 		</div>
 	</article>
@@ -50,5 +66,46 @@
 			</form>
 		</div>
 	</div>
+
+	<!-- 編集フォーム -->
+	<article th:fragment="edit">
+		<div class="card">
+			<div class="card-body">
+				<form
+					hx:patch="@{/comments/{id}(id=${commentId})}"
+					hx-target="closest .comment"
+					hx-include="#csrf-token"
+					th:object="${commentForm}"
+				>
+					<textarea
+						th:field="*{body}"
+						class="form-control"
+						th:errorclass="is-invalid"
+						th:placeholder="#{comment.create.placeholder}"
+					>
+						コメント
+					</textarea>
+					<div class="invalid-feedback" th:errors="*{body}">
+						バリデーションエラーメッセージ
+					</div>
+					<hr>
+					<div class="text-end">
+						<button type="button"
+							class="btn btn-secondary btn-sm"
+							hx:get="@{/comments/{id}(id=${commentId})}"
+							hx-trigger="click"
+							hx-target="closest .comment"
+							th:text="#{comment.cancel.btn}"
+						>
+							キャンセル
+						</button>
+						<button class="btn btn-primary btn-sm" th:text="#{comment.update.btn}">
+							更新
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</article>
 </body>
 </html>
