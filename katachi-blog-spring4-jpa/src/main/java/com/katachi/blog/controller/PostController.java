@@ -1,5 +1,6 @@
 package com.katachi.blog.controller;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 
@@ -13,12 +14,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.katachi.blog.model.Comment;
 import com.katachi.blog.model.Post;
+import com.katachi.blog.service.CommentService;
 import com.katachi.blog.service.PostService;
 
 @Controller
 @RequestMapping("/posts")
 public class PostController {
+
+	@Autowired
+	private CommentService commentService;
 
 	@Autowired
 	private PostService postService;
@@ -40,6 +46,9 @@ public class PostController {
 
 		Post post = postService.getPostBySlug(slug);
 		model.addAttribute(post);
+
+		List<Comment> comments = commentService.getByPostId(post.getId());
+		model.addAttribute("comments", comments);
 
 		return "posts/show";
 	}

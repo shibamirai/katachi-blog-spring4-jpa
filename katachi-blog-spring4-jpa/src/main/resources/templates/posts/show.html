@@ -50,9 +50,19 @@
 							投稿者名
 						</a>
 					</div>
-					<p class="post-body mt-4" th:text="${post.body}">
+					<p class="post-body mt-4 fs-5 lh-lg" th:text="${post.body}">
 						記事本文
 					</p>
+				</section>
+
+				<section class="mt-5 comments">
+					<div id="comment-list" class="row row-cols-1 g-3">
+						<div th:each="comment: ${comments}" class="col comment">
+							<article th:replace="~{components/comment :: show}">
+								コメント
+							</article>
+						</div>
+					</div>
 				</section>
 
 			</div>

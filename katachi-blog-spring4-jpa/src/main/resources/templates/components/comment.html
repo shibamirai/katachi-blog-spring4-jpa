@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<!-- 表示 -->
+	<article th:fragment="show">
+		<div class="card bg-body-tertiary">
+			<div class="card-body">
+				<div class="row card-title">
+					<h6 class="col-auto me-auto" th:text="${comment.user.name}">
+						投稿者名
+					</h6>
+					<small class="col-auto text-body-secondary"
+					 	th:text="${#temporals.format(comment.postedAt, #locale)}"
+					>
+						投稿日時
+					</small>
+				</div>
+
+				<p class="card-text" th:text="${comment.body}">
+					コメント
+				</p>
+			</div>
+		</div>
+	</article>
+</body>
+</html>

@@ -23,3 +23,7 @@ footer li {
 .post-body {
 	white-space: pre-wrap;
 }
+
+.comments .card-text {
+	white-space: pre-wrap;
+}
