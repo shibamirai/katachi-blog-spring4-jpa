@@ -21,4 +21,7 @@ public interface PostService {
 	/** 記事を更新する */
 	Post update(Post post);
 
+	/** 記事を削除する */
+	void delete(Post post);
+
 }
