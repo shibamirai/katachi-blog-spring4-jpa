@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<body>
+	<main layout:fragment="content" class="container" id="register">
+		<section class="mx-auto my-5 border p-4 rounded">
+			<form method="post" th:action="@{/register}" th:object="${registerForm}">
+				<h4 class="text-center" th:text="#{register}">
+					アカウント登録
+				</h4>
+
+				<div class="mt-4">
+					<label for="name" class="form-label" th:text="#{registerForm.name}">
+						名前
+					</label>
+					<input type="text"
+						th:field="*{name}"
+						class="form-control"
+						th:errorclass="is-invalid"
+						required
+					>
+					<div class="invalid-feedback" th:errors="*{name}">
+						エラーメッセージ
+					</div>
+				</div>
+				<div class="mt-4">
+					<label for="email" class="form-label" th:text="#{registerForm.email}">
+						メールアドレス
+					</label>
+					<input type="email"
+						th:field="*{email}"
+						class="form-control"
+						th:errorclass="is-invalid"
+						required
+					>
+					<div class="invalid-feedback" th:errors="*{email}">
+						エラーメッセージ
+					</div>
+				</div>
+				<div class="mt-4">
+					<label for="password" class="form-label" th:text="#{registerForm.password}">
+						パスワード
+					</label>
+					<input type="password"
+						th:field="*{password}"
+						class="form-control"
+						th:errorclass="is-invalid"
+						required
+					>
+					<div class="invalid-feedback" th:errors="*{password}">
+						エラーメッセージ
+					</div>
+				</div>
+				<div class="mt-4">
+					<label for="passwordConfirmation" class="form-label" th:text="#{registerForm.passwordConfirmation}">
+						パスワード再入力
+					</label>
+					<input type="password"
+						th:field="*{passwordConfirmation}"
+						class="form-control"
+						th:errorclass="is-invalid"
+						required
+					>
+					<div class="invalid-feedback" th:errors="*{passwordConfirmation}">
+						エラーメッセージ
+					</div>
+				</div>
+				<div class="mt-4 text-center">
+					<button class="btn btn-primary" th:text="#{register.btn}">
+						登録
+					</button>
+				</div>
+			</form>
+		</section>
+	</main>
+</body>
+</html>

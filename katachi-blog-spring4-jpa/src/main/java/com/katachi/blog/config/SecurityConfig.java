@@ -48,6 +48,7 @@ public class SecurityConfig {
 			.authorizeHttpRequests(authorize -> authorize
 				.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
 				.requestMatchers("/").permitAll()
+				.requestMatchers("/register").permitAll()
 				.requestMatchers("/login").permitAll()
 				.requestMatchers("/error").permitAll()
 				.requestMatchers("/media/**").permitAll()

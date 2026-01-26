@@ -20,4 +20,9 @@ public class UserServiceImpl implements UserService {
 				.orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
 	}
 
+	@Override
+	public User register(User user) {
+		return userRepository.save(user);
+	}
+
 }

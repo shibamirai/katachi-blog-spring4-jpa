@@ -61,6 +61,15 @@
 			<div sec:authorize="!isAuthenticated()">
 				<ul class="navbar-nav">
 					<li class="nav-item">
+						<a th:href="@{/register}"
+							class="nav-link"
+							th:classappend="${currentUrl} == @{/register} ? 'link-primary' : ''"
+							th:text="#{register}"
+						>
+							アカウント登録
+						</a>
+					</li>
+					<li class="nav-item">
 						<a th:href="@{/login}"
 							class="nav-link"
 							th:classappend="${currentUrl} == @{/login} ? 'link-primary' : ''"
