@@ -11,4 +11,6 @@ public interface UserService {
 
 	User register(User user);
 
+	boolean existsByEmail(String email);
+
 }
