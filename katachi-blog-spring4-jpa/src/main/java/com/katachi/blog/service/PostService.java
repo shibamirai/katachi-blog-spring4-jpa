@@ -13,7 +13,12 @@ public interface PostService {
 
 	Post getPostBySlug(String slug);
 
+	Post getMyPostById(Integer id);
+
 	/** 記事を投稿する */
 	Post post(Post post);
+
+	/** 記事を更新する */
+	Post update(Post post);
 
 }

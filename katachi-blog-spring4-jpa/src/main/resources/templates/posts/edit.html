@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<body>
+	<main layout:fragment="content" class="container" id="post-edit">
+		<div class="d-none d-lg-block my-4">
+			<a th:href="@{/admin/posts}" class="icon-link">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+					<path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+				</svg>
+				<span th:text="#{post.back.btn}">
+					戻る
+				</span>
+			</a>
+		</div>
+
+		<section class="mx-auto mb-5 border p-4 rounded">
+			<form method="post"
+				enctype="multipart/form-data"
+				th:action="@{/admin/posts/{id}/edit(id=${postId})}"
+				th:object="${postForm}"
+			>
+				<h4 class="text-center" th:text="#{post.edit}">
+					編集
+				</h4>
+
+				<div class="mt-4">
+					<label for="title" class="form-label" th:text="#{postForm.title}">
+						タイトル
+					</label>
+					<input type="text"
+						th:field="*{title}"
+						class="form-control"
+						th:errorclass="is-invalid"
+						required
+					>
+					<div class="invalid-feedback" th:errors="*{title}">
+						バリデーションエラーメッセージ
+					</div>
+				</div>
+
+				<div class="mt-4">
+					<label for="thumbnailFile" class="form-label" th:text="#{postForm.thumbnail}">
+						記事画像
+					</label>
+					<input type="file"
+						th:field="*{thumbnailFile}"
+						class="form-control"
+						th:errorclass="is-invalid"
+					>
+					<div class="invalid-feedback" th:errors="*{thumbnailFile}">
+						バリデーションエラーメッセージ
+					</div>
+					<div class="form-check" th:if="*{thumbnail} != null">
+						<input type="checkbox"
+							th:field="*{deleteThumbnail}"
+							class="form-check-input"
+						>
+						<label for="deleteThumbnail"
+							class="form-check-label"
+							th:text="#{postForm.thumbnail.delete}"
+						>
+							削除
+						</label>
+					</div>
+					<img th:if="*{thumbnail} != null" class="img-fluid"
+						th:src="@{/media/__*{thumbnail}__}"
+					>
+				</div>
+
+				<div class="mt-4">
+					<label for="body" class="form-label" th:text="#{postForm.body}">
+						記事本文
+					</label>
+					<textarea
+						th:field="*{body}"
+						class="form-control"
+						th:errorclass="is-invalid"
+						required
+					></textarea>
+					<div class="invalid-feedback" th:errors="*{body}">
+						バリデーションエラーメッセージ
+					</div>
+				</div>
+
+				<div class="mt-4">
+					<label for="categoryId" class="form-label" th:text="#{postForm.category}">
+						カテゴリー
+					</label>
+					<select
+						th:field="*{categoryId}"
+						class="form-control"
+						th:errorclass="is-invalid"
+					>
+						<option
+							th:each="category : ${categories}"
+							th:value="${category.id}"
+							th:text="${category.name}"
+						>
+							カテゴリー項目
+						</option>
+					</select>
+					<div class="invalid-feedback" th:errors="*{categoryId}">
+						バリデーションエラーメッセージ
+					</div>
+				</div>
+
+				<div class="mt-4 text-center">
+					<button class="btn btn-primary" th:text="#{post.update.btn}">
+						送信
+					</button>
+				</div>
+			</form>
+		</section>
+	</main>
+</body>
+</html>

@@ -30,9 +30,12 @@
 							</td>
 							<td class="row row-cols-auto justify-content-end">
 								<div class="col">
-									<span th:text="#{post.edit.btn}">
+									<a th:href="@{/admin/posts/{id}/edit(id=${post.id})}"
+										class="btn btn-success"
+										th:text="#{post.edit.btn}"
+									>
 										Edit
-									</span>
+									</a>
 								</div>
 								<div class="col">
 									<span th:text="#{post.delete.btn}">
