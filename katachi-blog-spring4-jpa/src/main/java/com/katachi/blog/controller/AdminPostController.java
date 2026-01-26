@@ -6,10 +6,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.katachi.blog.form.PostForm;
 import com.katachi.blog.model.Post;
@@ -38,6 +41,9 @@ public class AdminPostController {
 	@Autowired
 	private PostService postService;
 
+	@Autowired
+	private MessageSource messageSource;
+
 	@Value("${app.media.directory}")
 	private String mediaDirectory;
 
@@ -52,7 +58,9 @@ public class AdminPostController {
 		Model model,
 		@AuthenticationPrincipal User user,
 		@ModelAttribute @Validated PostForm form,
-		BindingResult bindingResult
+		BindingResult bindingResult,
+		RedirectAttributes redirectAttributes,
+		Locale locale
 	) throws IOException {
 		if (bindingResult.hasErrors()) {
 			return create(model, form);
@@ -93,6 +101,11 @@ public class AdminPostController {
 		post.setUpdatedAt(LocalDateTime.now());
 		
 		postService.post(post);
+
+		Object[] args = { post.getTitle() };
+		redirectAttributes.addFlashAttribute("flashMessage",
+			messageSource.getMessage("post.created", args, locale)
+		);
 
 		return "redirect:/";
 	}
