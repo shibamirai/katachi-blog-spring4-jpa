@@ -25,4 +25,9 @@ public class CategoryServiceImpl implements CategoryService {
 		return categoryRepository.findById(id).orElseThrow();
 	}
 
+	@Override
+	public boolean exists(Integer id) {
+		return categoryRepository.existsById(id);
+	}
+
 }

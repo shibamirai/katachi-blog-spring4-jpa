@@ -10,4 +10,6 @@ public interface CategoryService {
 
 	Category getCategory(Integer id);
 
+	boolean exists(Integer id);
+
 }

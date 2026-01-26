@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.katachi.blog.validation.ValidCategory;
+
 import lombok.Data;
 
 @Data
@@ -19,6 +21,7 @@ public class PostForm {
 	@NotBlank
 	private String body;
 
+	@ValidCategory
 	private int categoryId;
 
 }
