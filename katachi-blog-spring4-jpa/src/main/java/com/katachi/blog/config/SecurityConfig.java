@@ -11,6 +11,12 @@ import org.springframework.security.config.annotation.web.configurers.HeadersCon
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandlerImpl;
+import org.springframework.security.web.util.matcher.AnyRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestHeaderRequestMatcher;
+
+import io.github.wimdeblauwe.htmx.spring.boot.security.HxLocationRedirectAccessDeniedHandler;
+import io.github.wimdeblauwe.htmx.spring.boot.security.HxRefreshHeaderAuthenticationEntryPoint;
 
 @Configuration
 @EnableWebSecurity
@@ -66,6 +72,32 @@ public class SecurityConfig {
 			.logout(logout -> logout
 				.logoutSuccessUrl("/")
 			);
+
+		/*
+		 * 未認証ユーザによる HTMX リクエストは
+		 * LoginUrlAuthenticationEntryPoint によるログイン画面表示ではなく
+		 * HxRefreshHeaderAuthenticationEntryPoint を使って全画面リフレッシュを行う
+		 * 
+		 * https://www.wimdeblauwe.com/blog/2022/10/04/htmx-authentication-error-handling/
+		 * 
+		 * HTMX リクエストに対する認可エラー (AccessDeniedException/AuthorizationDeniedException) は
+		 * HxLocationRedirectAccessDeniedHandler でエラー画面にリダイレクトさせる 
+		 */
+		http.exceptionHandling(exception -> exception
+			.defaultAuthenticationEntryPointFor(
+				new HxRefreshHeaderAuthenticationEntryPoint(),
+				new RequestHeaderRequestMatcher("HX-Request")
+			)
+			.defaultAccessDeniedHandlerFor(
+				new HxLocationRedirectAccessDeniedHandler("/error/403"),
+				new RequestHeaderRequestMatcher("HX-Request")
+			)
+			.defaultAccessDeniedHandlerFor(
+				new AccessDeniedHandlerImpl(),
+				AnyRequestMatcher.INSTANCE
+			)
+		);
+
 		return http.build();
 	}
 
