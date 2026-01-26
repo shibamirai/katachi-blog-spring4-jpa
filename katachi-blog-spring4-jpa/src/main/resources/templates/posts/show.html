@@ -7,7 +7,7 @@
 		<article class="row g-5">
 			<div class="col-lg-4 pt-lg-5">
 				<img class="img-fluid rounded"
-					th:src="@{/images/logo.png}"
+					th:src="${post.thumbnail == null} ? @{/images/logo.png} : @{/media/__${post.thumbnail}__}"
 					alt="blog photos"
 				>
 				<div class="row mt-4">

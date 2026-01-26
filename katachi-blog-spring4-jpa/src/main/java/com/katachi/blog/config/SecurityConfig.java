@@ -48,6 +48,7 @@ public class SecurityConfig {
 				.requestMatchers("/").permitAll()
 				.requestMatchers("/login").permitAll()
 				.requestMatchers("/error").permitAll()
+				.requestMatchers("/media/**").permitAll()
 				.requestMatchers("/posts/*").permitAll()
 				.requestMatchers("/admin/posts/**").hasRole("ADMIN")
 				.anyRequest().authenticated()
