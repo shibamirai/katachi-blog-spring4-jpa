@@ -20,4 +20,9 @@ public class CommentServiceImpl implements CommentService {
 		return commentRepository.findByPostId(postId);
 	}
 
+	@Override
+	public Comment post(Comment comment) {
+		return commentRepository.save(comment);
+	}
+
 }

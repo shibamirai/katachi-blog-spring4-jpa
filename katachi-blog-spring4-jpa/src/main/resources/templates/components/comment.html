@@ -22,5 +22,33 @@
 			</div>
 		</div>
 	</article>
+
+	<!--	 投稿フォーム -->
+	<div th:fragment="create" class="card">
+		<div class="card-body">
+			<form method="post"
+				th:action="@{/posts/{slug}/comments(slug=${post.slug})}"
+				th:object="${commentForm}"
+			>
+				<textarea
+					th:field="*{body}"
+					class="form-control"
+					th:errorclass="is-invalid"
+					th:placeholder="#{comment.create.placeholder}"
+				>
+					コメント入力
+				</textarea>
+				<div class="invalid-feedback" th:errors="*{body}">
+					バリデーションエラーメッセージ
+				</div>
+				<hr>
+				<div class="text-end">
+					<button class="btn btn-primary btn-sm" th:text="#{comment.create.btn}">
+						投稿
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
 </body>
 </html>

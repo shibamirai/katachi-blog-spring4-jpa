@@ -56,6 +56,31 @@
 				</section>
 
 				<section class="mt-5 comments">
+					<div class="mb-3">
+						<div sec:authorize="isAuthenticated()" th:insert="~{components/comment :: create}">
+							コメント入力フォーム
+						</div>
+
+						<p sec:authorize="!isAuthenticated()" class="fw-bold">
+							<span th:text="#{comment.leave}">
+								コメントを残しますか？
+							</span>
+							<a th:href="@{/register}"
+								class="link-body-emphasis link-underline-opacity-25 link-underline-opacity-100-hover"
+								th:text="#{register}"
+							>
+								アカウント登録
+							</a>
+							or
+							<a th:href="@{/login}"
+								class="link-body-emphasis link-underline-opacity-25 link-underline-opacity-100-hover"
+								th:text="#{login}"
+							>
+								ログイン
+							</a>
+						</p>
+					</div>
+
 					<div id="comment-list" class="row row-cols-1 g-3">
 						<div th:each="comment: ${comments}" class="col comment">
 							<article th:replace="~{components/comment :: show}">
@@ -64,7 +89,6 @@
 						</div>
 					</div>
 				</section>
-
 			</div>
 		</article>
 	</main>
