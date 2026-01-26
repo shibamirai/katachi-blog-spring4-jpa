@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -125,6 +126,29 @@ public class CommentController {
 
 		return List.of(
 			new ModelAndView(show(commentId, model)),
+			new ModelAndView("components/flash :: htmx-flash")
+		);
+	}
+
+	@HxRequest
+	@DeleteMapping(produces=MediaType.TEXT_HTML_VALUE, path="/{commentId}")
+	List<ModelAndView> delete(
+			@PathVariable Integer commentId,
+			Model model,
+			Locale locale
+	) {
+		Comment comment = commentService.getMyComment(commentId);
+		commentService.delete(comment);
+
+		List<Comment> comments = commentService.getByPostId(comment.getPostId());
+		model.addAttribute("comments", comments);
+
+		model.addAttribute("htmxMessage",
+			messageSource.getMessage("comment.deleted", null, locale)
+		);
+
+		return List.of(
+			new ModelAndView("posts/show :: comment-list"),
 			new ModelAndView("components/flash :: htmx-flash")
 		);
 	}

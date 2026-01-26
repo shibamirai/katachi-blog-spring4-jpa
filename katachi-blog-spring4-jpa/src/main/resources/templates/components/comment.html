@@ -33,6 +33,18 @@
 						>
 							Edit
 						</button>
+						<button
+							class="btn btn-outline-danger btn-sm"
+							hx:delete="@{/comments/{id}(id=${comment.id})}"
+							hx-include="#csrf-token"
+							th:attr="hx-confirm=#{comment.delete.confirm}"
+							hx-trigger="click"
+							hx-target="#comment-list"
+							hx-swap="outerHTML"
+							th:text="#{comment.delete.btn}"
+						>
+							Delete
+						</button>
 					</div>
 				</div>
 			</div>

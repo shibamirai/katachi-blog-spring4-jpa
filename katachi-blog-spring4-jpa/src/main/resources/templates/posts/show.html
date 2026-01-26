@@ -81,7 +81,7 @@
 						</p>
 					</div>
 
-					<div id="comment-list" class="row row-cols-1 g-3">
+					<div th:fragment="comment-list" id="comment-list" class="row row-cols-1 g-3">
 						<div th:each="comment: ${comments}" class="col comment">
 							<article th:replace="~{components/comment :: show}">
 								コメント

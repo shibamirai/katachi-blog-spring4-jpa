@@ -14,4 +14,6 @@ public interface CommentService {
 
 	Comment update(Comment comment);
 
+	void delete(Comment comment);
+
 }
