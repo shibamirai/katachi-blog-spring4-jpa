@@ -29,6 +29,16 @@
 							</span>
 						</a>
 						<ul class="dropdown-menu dropdown-menu-end">
+							<th:block sec:authorize="hasRole('ROLE_ADMIN')">
+								<li>
+									<a class="dropdown-item"
+										th:href="@{/admin/posts/create}"
+										th:text="#{post.create}"
+									>
+										新規投稿
+									</a>
+								</li>
+							</th:block>
 							<li>
 								<form method="post" th:action="@{/logout}">
 									<button class="dropdown-item btn" type="submit" th:text="#{logout}">

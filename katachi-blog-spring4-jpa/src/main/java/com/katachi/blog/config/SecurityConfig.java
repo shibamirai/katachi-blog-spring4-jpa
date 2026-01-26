@@ -49,6 +49,7 @@ public class SecurityConfig {
 				.requestMatchers("/login").permitAll()
 				.requestMatchers("/error").permitAll()
 				.requestMatchers("/posts/*").permitAll()
+				.requestMatchers("/admin/posts/**").hasRole("ADMIN")
 				.anyRequest().authenticated()
 			)
 			.formLogin(login -> login

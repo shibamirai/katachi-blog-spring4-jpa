@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<body>
+	<main layout:fragment="content" class="container" id="post-create">
+		<section class="mx-auto my-5 border p-4 rounded">
+			<form method="POST"
+				enctype="multipart/form-data"
+				th:action="@{/admin/posts/create}"
+				th:object="${postForm}"
+			>
+				<h4 class="text-center" th:text="#{post.create}">新規投稿</h4>
+
+				<div class="mt-4">
+					<label for="title" class="form-label" th:text="#{postForm.title}">
+						タイトル
+					</label>
+					<input type="text"
+						th:field="*{title}"
+						class="form-control"
+						th:errorclass="is-invalid"
+						required
+					>
+					<div class="invalid-feedback" th:errors="*{title}">
+						バリデーションエラーメッセージ
+					</div>
+				</div>
+
+				<div class="mt-4">
+					<label for="thumbnailFile" class="form-label" th:text="#{postForm.thumbnail}">
+						記事画像
+					</label>
+					<input type="file"
+						th:field="*{thumbnailFile}"
+						class="form-control"
+						th:errorclass="is-invalid"
+					>
+					<div class="invalid-feedback" th:errors="*{thumbnailFile}">
+						バリデーションエラーメッセージ
+					</div>
+				</div>
+
+				<div class="mt-4">
+					<label for="body" class="form-label" th:text="#{postForm.body}">
+						記事本文
+					</label>
+					<textarea
+						th:field="*{body}"
+						class="form-control"
+						th:errorclass="is-invalid"
+						required
+					></textarea>
+					<div class="invalid-feedback" th:errors="*{body}">
+						バリデーションエラーメッセージ
+					</div>
+				</div>
+
+				<div class="mt-4">
+					<label for="categoryId" class="form-label" th:text="#{postForm.category}">
+						カテゴリー
+					</label>
+					<select
+						th:field="*{categoryId}"
+						class="form-control"
+						th:errorclass="is-invalid"
+					>
+						<option
+							th:each="category : ${categories}"
+							th:value="${category.id}"
+							th:text="${category.name}"
+						>
+							カテゴリー項目
+						</option>
+					</select>
+					<div class="invalid-feedback" th:errors="*{categoryId}">
+						バリデーションエラーメッセージ
+					</div>
+				</div>
+
+				<div class="mt-4 text-center">
+					<button class="btn btn-primary" th:text="#{post.create.btn}">
+						送信
+					</button>
+				</div>
+			</form>
+		</section>
+	</main>
+</body>
+</html>
