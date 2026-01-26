@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<head>
+</head>
+<body>
+	<main layout:fragment="content" id="post-index">
+		<h5 class="text-center" th:text="#{post.index}">
+			記事一覧
+		</h5>
+
+		<div class="mypost-list my-4 container">
+			<p th:if="${#lists.size(posts) == 0}" class="text-center" th:text="#{post.nothing}">
+				Nothing Posted
+			</p>
+			<div th:if="${#lists.size(posts) > 0}" class="card px-3">
+				<table class="table table-hover mt-3">
+					<tbody>
+						<tr th:each="post: ${posts}">
+							<td>
+								<a th:href="@{/posts/{slug}(slug=${post.slug})}"
+									class="link-dark link-underline-opacity-0"
+									th:text="${post.title}"
+								>
+									記事タイトル
+								</a>
+							</td>
+							<td th:text="${#temporals.format(post.postedAt, #locale)}">
+								投稿日時
+							</td>
+							<td class="row row-cols-auto justify-content-end">
+								<div class="col">
+									<span th:text="#{post.edit.btn}">
+										Edit
+									</span>
+								</div>
+								<div class="col">
+									<span th:text="#{post.delete.btn}">
+										Delete
+									</span>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div th:if="${page.totalPages} > 1">
+				<nav th:replace="~{components/pagination::pagination}"></nav>
+			</div>
+		</div>
+	</main>
+</body>
+
+</html>

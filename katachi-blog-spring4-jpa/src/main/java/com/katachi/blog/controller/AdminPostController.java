@@ -6,12 +6,18 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +35,7 @@ import com.katachi.blog.form.PostForm;
 import com.katachi.blog.model.Post;
 import com.katachi.blog.model.User;
 import com.katachi.blog.service.CategoryService;
+import com.katachi.blog.service.PostCriteria;
 import com.katachi.blog.service.PostService;
 
 @Controller
@@ -46,6 +53,26 @@ public class AdminPostController {
 
 	@Value("${app.media.directory}")
 	private String mediaDirectory;
+
+	@GetMapping
+	public String index(Model model,
+			@AuthenticationPrincipal User user,
+			@PageableDefault(page=0, size=10, sort="slug", direction=Direction.DESC) Pageable pageable
+	) {
+		// ログインユーザーの記事のみ
+		PostCriteria postCriteria = new PostCriteria(
+			Optional.empty(),
+			Optional.empty(),
+			Optional.of(user.getId())
+		);
+		Page<Post> page = postService.getPosts(postCriteria, pageable);
+		model.addAttribute("page", page);
+
+		List<Post> posts = page.getContent();
+		model.addAttribute("posts", posts);
+
+		return "posts/index";
+	}
 
 	@GetMapping("/create")
 	public String create(Model model, @ModelAttribute PostForm form) {

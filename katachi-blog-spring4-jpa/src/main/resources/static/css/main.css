@@ -12,6 +12,10 @@ footer li {
 	max-width: 700px;
 }
 
+#post-index > .mypost-list {
+	overflow-x: auto;
+}
+
 .post-body {
 	white-space: pre-wrap;
 }

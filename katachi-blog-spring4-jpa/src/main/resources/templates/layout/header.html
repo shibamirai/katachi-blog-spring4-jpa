@@ -32,6 +32,14 @@
 							<th:block sec:authorize="hasRole('ROLE_ADMIN')">
 								<li>
 									<a class="dropdown-item"
+										th:href="@{/admin/posts}"
+										th:text="#{post.index}"
+									>
+										投稿記事一覧
+									</a>
+								</li>
+								<li>
+									<a class="dropdown-item"
 										th:href="@{/admin/posts/create}"
 										th:text="#{post.create}"
 									>
